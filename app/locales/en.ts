@@ -346,6 +346,11 @@ const en: LocaleType = {
           Title: "OpenAI Endpoint",
           SubTitle: "Must start with http(s):// or use /api/openai as default",
         },
+
+        FetchModels: {
+          Title: "Fetch Model List",
+          SubTitle: "Fetch available models from OpenAI API automatically",
+        },
       },
       Azure: {
         ApiKey: {

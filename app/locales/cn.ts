@@ -342,6 +342,11 @@ const cn = {
           Title: "接口地址",
           SubTitle: "除默认地址外，必须包含 http(s)://",
         },
+
+        FetchModels: {
+          Title: "获取模型列表",
+          SubTitle: "从 OpenAI API 自动获取可用模型列表",
+        },
       },
       Azure: {
         ApiKey: {
