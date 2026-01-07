@@ -149,6 +149,9 @@ const DEFAULT_ACCESS_STATE = {
   defaultModel: "",
   visionModels: "",
 
+  // openai fetch models from API
+  openaiEnableFetchModels: false,
+
   // tts config
   edgeTTSVoiceName: "zh-CN-YunxiNeural",
 };

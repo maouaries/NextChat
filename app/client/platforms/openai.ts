@@ -80,7 +80,7 @@ export interface DalleRequestPayload {
 }
 
 export class ChatGPTApi implements LLMApi {
-  private disableListModels = true;
+  private disableListModels = false;
 
   path(path: string): string {
     const accessStore = useAccessStore.getState();
@@ -495,40 +495,64 @@ export class ChatGPTApi implements LLMApi {
   }
 
   async models(): Promise<LLMModel[]> {
-    if (this.disableListModels) {
+    const accessStore = useAccessStore.getState();
+
+    // Check if fetch models from API is enabled
+    if (!accessStore.openaiEnableFetchModels) {
       return DEFAULT_MODELS.slice();
     }
 
-    const res = await fetch(this.path(OpenaiPath.ListModelPath), {
-      method: "GET",
-      headers: {
-        ...getHeaders(),
-      },
-    });
+    try {
+      const res = await fetch(this.path(OpenaiPath.ListModelPath), {
+        method: "GET",
+        headers: {
+          ...getHeaders(),
+        },
+      });
 
-    const resJson = (await res.json()) as OpenAIListModelResponse;
-    const chatModels = resJson.data?.filter(
-      (m) => m.id.startsWith("gpt-") || m.id.startsWith("chatgpt-"),
-    );
-    console.log("[Models]", chatModels);
+      if (!res.ok) {
+        console.error("[Models] Failed to fetch models, using default list");
+        return DEFAULT_MODELS.slice();
+      }
 
-    if (!chatModels) {
-      return [];
+      const resJson = (await res.json()) as OpenAIListModelResponse;
+
+      // Filter chat-capable models: gpt-*, chatgpt-*, o1*, o3*, o4*, dall-e-*
+      const chatModels = resJson.data?.filter((m) => {
+        const id = m.id;
+        return (
+          id.startsWith("gpt-") ||
+          id.startsWith("chatgpt-") ||
+          id.startsWith("o1") ||
+          id.startsWith("o3") ||
+          id.startsWith("o4") ||
+          id.startsWith("dall-e")
+        );
+      });
+
+      console.log("[Models] Fetched from API:", chatModels?.length, "models");
+
+      if (!chatModels || chatModels.length === 0) {
+        console.warn("[Models] No models returned from API, using default list");
+        return DEFAULT_MODELS.slice();
+      }
+
+      let seq = 1000;
+      return chatModels.map((m) => ({
+        name: m.id,
+        available: true,
+        sorted: seq++,
+        provider: {
+          id: "openai",
+          providerName: "OpenAI",
+          providerType: "openai",
+          sorted: 1,
+        },
+      }));
+    } catch (e) {
+      console.error("[Models] Error fetching models:", e);
+      return DEFAULT_MODELS.slice();
     }
-
-    //由于目前 OpenAI 的 disableListModels 默认为 true，所以当前实际不会运行到这场
-    let seq = 1000; //同 Constant.ts 中的排序保持一致
-    return chatModels.map((m) => ({
-      name: m.id,
-      available: true,
-      sorted: seq++,
-      provider: {
-        id: "openai",
-        providerName: "OpenAI",
-        providerType: "openai",
-        sorted: 1,
-      },
-    }));
   }
 }
 export { OpenaiPath };

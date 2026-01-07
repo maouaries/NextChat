@@ -1869,6 +1869,22 @@ export function Settings() {
             </>
           )}
 
+          <ListItem
+            title={Locale.Settings.Access.OpenAI.FetchModels.Title}
+            subTitle={Locale.Settings.Access.OpenAI.FetchModels.SubTitle}
+          >
+            <input
+              type="checkbox"
+              checked={accessStore.openaiEnableFetchModels}
+              onChange={(e) =>
+                accessStore.update(
+                  (access) =>
+                    (access.openaiEnableFetchModels = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </ListItem>
+
           {!shouldHideBalanceQuery && !clientConfig?.isApp ? (
             <ListItem
               title={Locale.Settings.Usage.Title}
