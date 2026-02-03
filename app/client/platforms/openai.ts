@@ -499,6 +499,8 @@ export class ChatGPTApi implements LLMApi {
 
     // Check if fetch models from API is enabled
     if (!accessStore.openaiEnableFetchModels) {
+      console.log("[Models] Fetch disabled, returning DEFAULT_MODELS");
+      // Don't call mergeModels - just return the defaults directly
       return DEFAULT_MODELS.slice();
     }
 
@@ -511,34 +513,42 @@ export class ChatGPTApi implements LLMApi {
       });
 
       if (!res.ok) {
-        console.error("[Models] Failed to fetch models, using default list");
+        console.error("[Models] Failed to fetch models, status:", res.status);
+        console.log("[Models] Falling back to DEFAULT_MODELS");
         return DEFAULT_MODELS.slice();
       }
 
       const resJson = (await res.json()) as OpenAIListModelResponse;
 
-      // Filter chat-capable models: gpt-*, chatgpt-*, o1*, o3*, o4*, dall-e-*
+      // More flexible filter - exclude known non-chat models
       const chatModels = resJson.data?.filter((m) => {
-        const id = m.id;
-        return (
-          id.startsWith("gpt-") ||
-          id.startsWith("chatgpt-") ||
-          id.startsWith("o1") ||
-          id.startsWith("o3") ||
-          id.startsWith("o4") ||
-          id.startsWith("dall-e")
-        );
+        const id = m.id.toLowerCase();
+
+        // Exclude non-chat models
+        const excludePatterns = [
+          'embedding',
+          'whisper',
+          'tts-',
+          'moderation',
+          'babbage-002',
+          'davinci-002',
+          'text-embedding',
+          'text-moderation'
+        ];
+
+        return !excludePatterns.some(pattern => id.includes(pattern));
       });
 
       console.log("[Models] Fetched from API:", chatModels?.length, "models");
 
       if (!chatModels || chatModels.length === 0) {
-        console.warn("[Models] No models returned from API, using default list");
+        console.warn("[Models] No models returned from API, using defaults");
         return DEFAULT_MODELS.slice();
       }
 
+      // Map the API response to our LLMModel format
       let seq = 1000;
-      return chatModels.map((m) => ({
+      const fetchedModels = chatModels.map((m) => ({
         name: m.id,
         available: true,
         sorted: seq++,
@@ -549,6 +559,13 @@ export class ChatGPTApi implements LLMApi {
           sorted: 1,
         },
       }));
+
+      console.log("[Models] Returning", fetchedModels.length, "fetched models");
+
+      // IMPORTANT: Don't call mergeModels here!
+      // Just return the fetched models directly
+      return fetchedModels;
+
     } catch (e) {
       console.error("[Models] Error fetching models:", e);
       return DEFAULT_MODELS.slice();
