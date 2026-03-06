@@ -501,16 +501,34 @@ export const VISION_MODEL_REGEXES = [
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
 const openaiModels = [
-  // GPT-3.5 (legacy, gpt-4o-mini is recommended)
-  "gpt-3.5-turbo",
-  "gpt-3.5-turbo-1106",
-  "gpt-3.5-turbo-0125",
-  // GPT-4 (legacy)
-  "gpt-4",
-  "gpt-4-turbo",
-  "gpt-4-turbo-2024-04-09",
-  "gpt-4-0125-preview",
-  "gpt-4-1106-preview",
+  // GPT-5
+  "gpt-5",
+  "gpt-5-2025-08-07",
+  "gpt-5-mini",
+  "gpt-5-mini-2025-08-07",
+  "gpt-5-nano",
+  "gpt-5-nano-2025-08-07",
+  // GPT-5.1, reasoning, Sep 30, 2024 knowledge cutoff
+  "gpt-5.1",
+  "gpt-5.1-2025-11-13",
+  // GPT-5.2, reasoning, Aug 31, 2025 knowledge cutoff
+  "gpt-5.2",
+  "gpt-5.2-2025-12-11",
+  "gpt-5.2-pro",
+  "gpt-5.2-pro-2025-12-11",
+  // GPT-5.4, reasoning, Aug 31, 2025 knowledge cutoff
+  "gpt-5.4",
+  "gpt-5.4-2026-03-05",
+  // o-series reasoning models
+  "o1",
+  "o1-2024-12-17",
+  "o1-pro",
+  "o3-mini",
+  "o3", //succeeded by gpt-5
+  "o3-2025-04-16",
+  "o3-pro",
+  "o4-mini", //succeeded by gpt-5-mini
+  "o4-mini-2025-04-16",
   // GPT-4o
   "gpt-4o",
   "gpt-4o-2024-05-13",
@@ -523,6 +541,16 @@ const openaiModels = [
   "gpt-4o-mini-audio-preview",
   "gpt-4o-search-preview",
   "gpt-4o-mini-search-preview",
+  // GPT-3.5 (legacy, gpt-4o-mini is recommended)
+  "gpt-3.5-turbo",
+  "gpt-3.5-turbo-1106",
+  "gpt-3.5-turbo-0125",
+  // GPT-4 (legacy)
+  "gpt-4",
+  "gpt-4-turbo",
+  "gpt-4-turbo-2024-04-09",
+  "gpt-4-0125-preview",
+  "gpt-4-1106-preview",
   // GPT-4.1
   "gpt-4.1",
   "gpt-4.1-2025-04-14",
@@ -530,31 +558,6 @@ const openaiModels = [
   "gpt-4.1-mini-2025-04-14",
   "gpt-4.1-nano",
   "gpt-4.1-nano-2025-04-14",
-  // GPT-5
-  "gpt-5",
-  "gpt-5-2025-08-07",
-  "gpt-5-mini",
-  "gpt-5-mini-2025-08-07",
-  "gpt-5-nano",
-  "gpt-5-nano-2025-08-07",
-  // GPT-5.1
-  "gpt-5.1",
-  "gpt-5.1-2025-11-13",
-  // GPT-5.2
-  "gpt-5.2",
-  "gpt-5.2-2025-12-11",
-  "gpt-5.2-pro",
-  "gpt-5.2-pro-2025-12-11",
-  // o-series reasoning models
-  "o1",
-  "o1-2024-12-17",
-  "o1-pro",
-  "o3-mini",
-  "o3",
-  "o3-2025-04-16",
-  "o3-pro",
-  "o4-mini",
-  "o4-mini-2025-04-16",
   // Image generation
   "dall-e-3",
   "gpt-image-1",
