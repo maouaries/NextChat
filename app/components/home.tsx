@@ -28,6 +28,7 @@ import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
 import { type ClientApi, getClientApi } from "../client/api";
 import { useAccessStore } from "../store/access";
+import { DEFAULT_MODELS } from "../constant";
 import clsx from "clsx";
 import { initializeMcpSystem, isMcpEnabled } from "../mcp/actions";
 
@@ -229,6 +230,7 @@ export function useLoadData() {
   useEffect(() => {
     (async () => {
       if (!accessStore.openaiEnableFetchModels) {
+        config.mergeModels(DEFAULT_MODELS as any as LLMModel[]);
         return;
       }
 
