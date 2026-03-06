@@ -222,16 +222,21 @@ function Screen() {
 
 export function useLoadData() {
   const config = useAppConfig();
+  const accessStore = useAccessStore();
 
   const api: ClientApi = getClientApi(config.modelConfig.providerName);
 
   useEffect(() => {
     (async () => {
+      if (!accessStore.openaiEnableFetchModels) {
+        return;
+      }
+
       const models = await api.llm.models();
       config.mergeModels(models);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessStore.openaiEnableFetchModels]);
 }
 
 export function Home() {
