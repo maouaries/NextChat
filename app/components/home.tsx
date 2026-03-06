@@ -26,7 +26,7 @@ import { SideBar } from "./sidebar";
 import { useAppConfig } from "../store/config";
 import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
-import { type ClientApi, getClientApi } from "../client/api";
+import { type ClientApi, type LLMModel, getClientApi } from "../client/api";
 import { useAccessStore } from "../store/access";
 import { DEFAULT_MODELS } from "../constant";
 import clsx from "clsx";
