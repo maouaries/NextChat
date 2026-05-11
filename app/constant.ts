@@ -587,7 +587,7 @@ export const DEFAULT_MODELS = [
       sorted: 6,
     },
   })),
-  ...alibabaModes.map((name) => ({
+  ...alibabaModels.map((name) => ({
     name,
     available: true,
     sorted: seq++,
@@ -631,7 +631,7 @@ export const DEFAULT_MODELS = [
       sorted: 10,
     },
   })),
-  ...xAIModes.map((name) => ({
+  ...xAIModels.map((name) => ({
     name,
     available: true,
     sorted: seq++,
