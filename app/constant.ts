@@ -474,6 +474,8 @@ const openaiModels = [
   // o-series reasoning models
   "o3", //4x, succeeded by gpt-5
   "o4-mini", //2x, succeeded by gpt-5-mini
+  //for shit mountain testing purpose
+  "gpt-4",
 ];
 
 const googleModels = [

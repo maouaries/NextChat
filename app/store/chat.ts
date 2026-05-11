@@ -21,7 +21,6 @@ import {
   DEFAULT_SYSTEM_TEMPLATE,
   GEMINI_SUMMARIZE_MODEL,
   DEEPSEEK_SUMMARIZE_MODEL,
-  KnowledgeCutOffDate,
   MCP_SYSTEM_TEMPLATE,
   MCP_TOOLS_TEMPLATE,
   ServiceProvider,
@@ -159,9 +158,6 @@ function countMessages(msgs: ChatMessage[]) {
 }
 
 function fillTemplateWith(input: string, modelConfig: ModelConfig) {
-  const cutoff =
-    KnowledgeCutOffDate[modelConfig.model] ?? KnowledgeCutOffDate.default;
-  // Find the model in the DEFAULT_MODELS array that matches the modelConfig.model
   const modelInfo = DEFAULT_MODELS.find((m) => m.name === modelConfig.model);
 
   var serviceProvider = "OpenAI";
@@ -174,7 +170,6 @@ function fillTemplateWith(input: string, modelConfig: ModelConfig) {
 
   const vars = {
     ServiceProvider: serviceProvider,
-    cutoff,
     model: modelConfig.model,
     time: new Date().toString(),
     lang: getLang(),
